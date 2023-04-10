@@ -63,6 +63,7 @@ export default {
     async login() {
       if (this.$refs.form.validate()) {
         try {
+          this.email.toLowerCase();
           await firebase
             .auth()
             .signInWithEmailAndPassword(this.email, this.password);

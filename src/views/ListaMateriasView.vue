@@ -28,11 +28,11 @@
     </v-app-bar>
     <div class="main-container">
       <h2 class="title-page">Materias Inscritas</h2>
-      <vue-card class="card elevation-12" v-for="value in materias" :key="materias">
+      <vue-card class="card elevation-12" v-for="subject in subjects" :key="subject" >
         <h3 class="subject-name">
-          {{ value.name }}
+          {{ subjects[0] }}
         </h3>
-        <p class="coach-name">Profesor: {{ value.coach }}</p>
+        <p class="coach-name">Profesor: {{ subjects[1] }}</p>
 
         <div>
           <v-dialog v-model="dialog" width="500">
@@ -44,13 +44,13 @@
 
             <v-card>
               <v-card-title class="subject-name">
-                {{ value.name }}
+                {{ subjects[0] }}
               </v-card-title>
               <v-card-text>
-                <p class="coach-name">Profesor: {{ value.coach }}</p>
-                <p class="coach-name">Salón: {{ value.classroom }}</p>
-                <p class="coach-name">Días: {{ value.days }}</p>
-                <p class="coach-name">Horario: {{ value.schedules }}</p>
+                <p class="coach-name">Profesor: {{ subjects[1] }}</p>
+                <p class="coach-name">Salón: {{ subjects[2] }}</p>
+                <p class="coach-name">Días: {{ subjects[3] }}</p>
+                <p class="coach-name">Horario: {{ subjects[4] }}</p>
               </v-card-text>
             </v-card>
           </v-dialog>
@@ -117,40 +117,40 @@ div > li {
 </style>
 
 <script>
+import firebase from "firebase/compat/app";
+
 export default {
+  name: "Materias",
+  mounted() {
+    this.getData();
+  },
   data() {
     return {
-      materias: [
-        {
-          name: "Matemáticas",
-          coach: "Cristiano Ronaldo",
-          classroom: "La congeladora",
-          days: "Lunes, Miércoles y Viernes",
-          schedules: "7:00-9:00",
-        },
-        {
-          name: "Historia",
-          coach: "Messi",
-          classroom: "La congeladora",
-          days: "Lunes, Miércoles y Viernes",
-          schedules: "7:00-9:00",
-        },
-        {
-          name: "Ciencias",
-          coach: "Michael Jordan",
-          classroom: "La congeladora",
-          days: "Lunes, Miércoles y Viernes",
-          schedules: "7:00-9:00",
-        },
-        {
-          name: "Ética",
-          coach: "Buda",
-          classroom: "La congeladora",
-          days: "Lunes, Miércoles y Viernes",
-          schedules: "7:00-9:00",
-        },
-      ],
+      subjects:[]
     };
+  },
+  methods: {
+    async getData() {
+      firebase
+        .firestore()
+        .collection("subjects")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            let subject = doc.data();
+            this.subjects.push(subject.subject);
+            this.subjects.push(subject.teacher);
+            this.subjects.push(subject.classroom);
+            this.subjects.push(subject.days);
+            this.subjects.push(subject.schedule);
+          });
+          console.log(this.subjects[0])
+        })
+        .catch((error) => {
+          console.log("Error getting documents: ", error);
+          // v-for="subject in subjects" :key="subject"
+        });
+    },
   },
 };
 </script>

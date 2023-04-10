@@ -119,8 +119,8 @@ export default {
           await firebase.firestore().collection("users").add({
             fullName: this.fullName,
             studentid: this.studentId,
-            institutionalEmail: this.institutionalEmail,
-            personalEmail: this.personalEmail,
+            institutionalEmail: this.institutionalEmail.toLowerCase(),
+            personalEmail: this.personalEmail.toLowerCase(),
             career: this.career.toUpperCase(),
             password: this.password,
           });

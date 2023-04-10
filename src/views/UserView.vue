@@ -40,23 +40,23 @@
     <div class="grid">
       <div>
         <h2>Nombre Completo</h2>
-        <p>{{ usuarios[0] }}</p>
+        <p>{{ users[0] }}</p>
       </div>
       <div>
         <h2>Matrícula</h2>
-        <p>{{ usuarios[3] }}</p>
+        <p>{{ users[3] }}</p>
       </div>
       <div>
         <h2>Correo Institucional</h2>
-        <p>{{ usuarios[1] }}</p>
+        <p>{{ users[1] }}</p>
       </div>
       <div>
         <h2>Carrera</h2>
-        <p>{{ usuarios[4] }}</p>
+        <p>{{ users[4] }}</p>
       </div>
       <div>
         <h2>Correo Personal</h2>
-        <p>{{ usuarios[2] }}</p>
+        <p>{{ users[2] }}</p>
       </div>
     </div>
   </div>
@@ -138,22 +138,11 @@ export default {
   },
   data() {
     return {
-      usuarios: [],
+      users: [],
     };
   },
   methods: {
     async getData() {
-      // const dbRef = firebase.database().ref();
-      // dbRef.child("users").child("WrdNsn89fcvcbQOOHmfg").get().then((snapshot) => {
-      //   if (snapshot.exists()) {
-      //     console.log(snapshot.val());
-      //   } else {
-      //     console.log("No data available");
-      //   }
-      // }).catch((error) => {
-      //   console.error(error);
-      // });
-
       let userCurrentEmail = firebase.auth().currentUser.email;
       console.log(userCurrentEmail);
       firebase
@@ -163,12 +152,12 @@ export default {
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            let usuario = doc.data();
-            this.usuarios.push(usuario.fullName);
-            this.usuarios.push(usuario.institutionalEmail);
-            this.usuarios.push(usuario.personalEmail);
-            this.usuarios.push(usuario.studentid);
-            this.usuarios.push(usuario.career);
+            let user = doc.data();
+            this.users.push(user.fullName);
+            this.users.push(user.institutionalEmail);
+            this.users.push(user.personalEmail);
+            this.users.push(user.studentid);
+            this.users.push(user.career);
           });
         })
         .catch((error) => {
